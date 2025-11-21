@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jurnal Trading - SamsulFX</title>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- OCR -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.1.1/dist/tesseract.min.js"></script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- BACKGROUND FULL SCREEN -->
+  <div id="bg-full"></div>
+
+  <!-- CENTER PHOTO -->
+  <div id="bg-center">
+    <img src="Background.jpg" alt="Center Background">
+  </div>
+
+  <!-- APP -->
+  <div id="app">
+
+    <!-- LOGIN -->
+    <div id="login-screen" class="center-card glass">
+      <h1>Jurnal Trading</h1>
+      <p class="muted">Masuk pake username — data tersimpan lokal.</p>
+
+      <input id="username-input" placeholder="Masukkan username..." />
+
+      <div class="row">
+        <button id="login-btn" class="btn">Masuk</button>
+        <button id="guest-btn" class="btn ghost">Guest</button>
+      </div>
+    </div>
+
+    <!-- MAIN SCREEN -->
+    <div id="main-screen" class="hidden">
+
+      <header class="topbar glass">
+        <div>
+          <strong id="user-display" class="gold-label"></strong>
+          <span id="balance-display" class="muted"></span>
+        </div>
+
+        <button id="logout-btn" class="btn ghost">Logout</button>
+      </header>
+
+      <main class="container">
+
+        <!-- ACCOUNT -->
+        <section class="panel glass">
+          <h2>Account & Targets</h2>
+
+          <div class="form-grid">
+
+            <label>Initial Deposit (USDC)
+              <input id="deposit-input" type="number">
+            </label>
+
+            <label>Current Balance (Auto)
+              <input id="balance-input" readonly>
+            </label>
+
+            <label>Manual Override
+              <input id="balance-override" type="number" placeholder="Kosongkan untuk auto">
+            </label>
+
+            <div class="targets" style="grid-column: 1 / -1;">
+              <div>Targets:</div>
+              <div class="target-list">
+                <button class="tag target-btn" data-val="5000">5000</button>
+                <button class="tag target-btn" data-val="10000">10000</button>
+                <button class="tag target-btn" data-val="20000">20000</button>
+                <button class="tag target-btn" data-val="35000">35000</button>
+              </div>
+
+              <div class="progress-wrap">
+                <div class="progress-top">
+                  Selected Target: <strong id="selected-target">5000</strong>
+                </div>
+
+                <div class="progress-bar">
+                  <div id="target-fill"></div>
+                </div>
+
+                <div id="target-text" class="muted small"></div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+
+        <!-- ADD TRADE -->
+        <section class="panel glass">
+          <h2>Tambah Trade</h2>
+
+          <div class="form-grid">
+
+            <label>Amount (+profit / -loss)
+              <input id="trade-amount" type="number">
+            </label>
+
+            <label>Lot Size
+              <input id="trade-lot" type="number">
+            </label>
+
+            <label>Keterangan (buy/sell)
+              <input id="trade-desc" placeholder="buy, sell, scalp, dst">
+            </label>
+
+            <div class="row">
+              <button id="add-trade-btn" class="btn">Tambah</button>
+              <button id="import-csv-btn" class="btn ghost">Import CSV</button>
+              <button id="export-csv-btn" class="btn ghost">Export CSV</button>
+              <input id="csv-file" type="file" accept=".csv" hidden>
+            </div>
+
+          </div>
+        </section>
+
+
+        <!-- GALLERY -->
+        <section class="panel glass">
+          <h2>Gallery Screenshot</h2>
+
+          <div class="row">
+            <input id="screenshot-files" type="file" accept="image/*" multiple>
+            <button id="process-ocr-btn" class="btn ghost">Proses OCR Manual</button>
+            <button id="clear-gallery" class="btn ghost">Hapus Gallery</button>
+          </div>
+
+          <div id="gallery" class="gallery"></div>
+        </section>
+
+
+        <!-- HISTORY -->
+        <section class="panel glass">
+          <h2>Riwayat Trading</h2>
+
+          <div class="table-wrap">
+            <table id="trades-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Amount</th>
+                  <th>Lot</th>
+                  <th>Type</th>
+                  <th>Desc</th>
+                  <th>Cum</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+
+
+        <!-- CHART -->
+        <section class="panel glass chart-panel">
+          <h2>Chart</h2>
+          <div class="chart-holder">
+            <canvas id="chart"></canvas>
+          </div>
+        </section>
+
+      </main>
+
+    </div>
+
+  </div>
+
+  <!-- ZOOM IMAGE MODAL -->
+  <div id="imgModal" class="img-modal hidden">
+    <div class="img-wrap">
+      <img id="modalImg">
+    </div>
+
+    <div class="img-controls">
+      <button id="zoom-in" class="btn ghost">+</button>
+      <button id="zoom-out" class="btn ghost">-</button>
+      <button id="reset-zoom" class="btn ghost">Reset</button>
+      <button id="close-modal" class="btn ghost">Close</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
